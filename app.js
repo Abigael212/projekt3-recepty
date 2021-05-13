@@ -20,11 +20,19 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 let recipes = document.getElementById("recepty");
 let recipe, recipeObrazek, recipeImage, recipeInfo, recipeHeader;
+let search = document.getElementById("search");
+let inputtedSearch, filteredRecipes;
 
-createRecipeList();
+window.addEventListener("load", onPageLoad);
+search.addEventListener("click", filterRecipes);
 
-function createRecipeList() {
-    recepty.forEach((item) => {
+function onPageLoad() {
+    createRecipeList(recepty);
+};
+
+function createRecipeList(objectArray) {
+    clearChildren(recipes);
+    objectArray.forEach((item) => {
         recipe = document.createElement("div");
         recipeObrazek = document.createElement("div");
         recipeImage = document.createElement("img");
@@ -42,6 +50,20 @@ function createRecipeList() {
         recipeObrazek.appendChild(recipeImage);
         recipe.appendChild(recipeInfo);
         recipeInfo.appendChild(recipeHeader);
-    })
+    });
+};
+
+function clearChildren(domElement) {
+    while (domElement.firstChild) {
+        domElement.removeChild(domElement.firstChild);
+    };
+};
+
+function filterRecipes() {
+    inputtedSearch = document.getElementById("hledat").value;
+    filteredRecipes = recepty.filter(item => {
+        return item.nadpis.toLowerCase().startsWith(inputtedSearch.toLowerCase())
+    });
+    createRecipeList(filteredRecipes);
 };
 
