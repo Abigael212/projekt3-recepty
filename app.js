@@ -56,7 +56,7 @@ function createRecipeList(recipeArray) {
         recipeHeader = document.createElement("h3");
 
         recipe.setAttribute("class", "recept");
-        recipe.addEventListener("click", clickOnRecipeTile);
+        recipe.addEventListener("click", openRecipeDetail);
         recipeObrazek.setAttribute("class", "recept-obrazek");
         recipeImage.setAttribute("src", item.img);
         recipeInfo.setAttribute("class", "recept-info");
@@ -114,7 +114,7 @@ function sortRecipes(recipeSet, selectedSorting) {
     return recipesSorted;
 };
 
-function clickOnRecipeTile(event) {
+function openRecipeDetail(event) {
     let chosenRecipe = event.target.innerHTML;
     recipeIndex = getItemIndex(recepty, "nadpis", chosenRecipe);
     recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
