@@ -116,6 +116,7 @@ function sortRecipes(recipeSet, selectedSorting) {
 
 function openRecipeDetail(event) {
     let chosenRecipe = event.target.innerHTML;
+    console.log(event.target)
     recipeIndex = getItemIndex(recepty, "nadpis", chosenRecipe);
     recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
     recipeDetailCategory.innerHTML = recepty[recipeIndex].kategorie;
@@ -130,7 +131,6 @@ function getItemIndex(objectArray, attribute, value) {
             return i;
         };
     };
-    return -1;
 };
 
 // typerror ak nekliknem na názov 
