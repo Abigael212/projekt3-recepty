@@ -37,12 +37,12 @@ const sortDropdownOptions = {
 };
 
 window.addEventListener("load", onPageLoad);
-searchButton.addEventListener("click", applyFilterSort);
-categoryDropdown.addEventListener("change", applyFilterSort);
-sortDropdown.addEventListener("change", applyFilterSort);
+searchButton.addEventListener("click", () => {filterSortRecipes(recepty)});
+categoryDropdown.addEventListener("change", () => {filterSortRecipes(recepty)});
+sortDropdown.addEventListener("change", () => {filterSortRecipes(recepty)});
 
 function onPageLoad() {
-    createRecipeList(recepty);
+    filterSortRecipes(recepty);
 };
 
 function createRecipeList(recipeArray) {
@@ -74,12 +74,12 @@ function clearChildren(domElement) {
     };
 };
 
-function applyFilterSort() {
+function filterSortRecipes(recipeSet) {
     inputtedSearch = searchInput.value;
     selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text
 
-    searchRecipes(recepty, inputtedSearch);
+    searchRecipes(recipeSet, inputtedSearch);
     filterCategory(searchedRecipes, selectedCategory);
     sortRecipes(recipesCategory, selectedSorting);
     createRecipeList(recipesSorted);
