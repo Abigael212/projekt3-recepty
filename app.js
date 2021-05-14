@@ -30,11 +30,6 @@ let selectedCategory, recipesCategory;
 
 let sortDropdown = document.getElementById("razeni");
 let selectedSorting, recipesSorted;
-const sortDropdownOptions = {
-    alphabeticalAsc: "",
-    qualityDesc: "Od nejlepších",
-    qualityAsc: "Od nejhorších"
-};
 
 window.addEventListener("load", onPageLoad);
 searchButton.addEventListener("click", () => {filterSortRecipes(recepty)});
