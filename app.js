@@ -133,5 +133,5 @@ function getItemIndex(objectArray, attribute, value) {
     return -1;
 };
 
-// typerror ak nekliknem na názov
+// typerror ak nekliknem na názov 
 // aby keď filtrujem zmizol obrázok, ktorý už nie je v zozname
