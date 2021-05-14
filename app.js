@@ -31,10 +31,16 @@ let selectedCategory, recipesCategory;
 let sortDropdown = document.getElementById("razeni");
 let selectedSorting, recipesSorted;
 
+let recipeDetailPhoto = document.getElementById("recept-foto");
+let recipeDetailCategory = document.getElementById("recept-kategorie");
+let recipeDetailRating = document.getElementById("recept-hodnoceni");
+let recipeDetailName = document.getElementById("recept-nazev");
+let recipeDetailDescription = document.getElementById("recept-popis");
+
 window.addEventListener("load", onPageLoad);
-searchButton.addEventListener("click", () => {filterSortRecipes(recepty)});
-categoryDropdown.addEventListener("change", () => {filterSortRecipes(recepty)});
-sortDropdown.addEventListener("change", () => {filterSortRecipes(recepty)});
+searchButton.addEventListener("click", () => { filterSortRecipes(recepty) });
+categoryDropdown.addEventListener("change", () => { filterSortRecipes(recepty) });
+sortDropdown.addEventListener("change", () => { filterSortRecipes(recepty) });
 
 function onPageLoad() {
     filterSortRecipes(recepty);
@@ -50,6 +56,7 @@ function createRecipeList(recipeArray) {
         recipeHeader = document.createElement("h3");
 
         recipe.setAttribute("class", "recept");
+        recipe.addEventListener("click", clickOnRecipeTile);
         recipeObrazek.setAttribute("class", "recept-obrazek");
         recipeImage.setAttribute("src", item.img);
         recipeInfo.setAttribute("class", "recept-info");
@@ -107,4 +114,24 @@ function sortRecipes(recipeSet, selectedSorting) {
     return recipesSorted;
 };
 
+function clickOnRecipeTile(event) {
+    let chosenRecipe = event.target.innerHTML;
+    recipeIndex = getItemIndex(recepty, "nadpis", chosenRecipe);
+    recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
+    recipeDetailCategory.innerHTML = recepty[recipeIndex].kategorie;
+    recipeDetailRating.innerHTML = recepty[recipeIndex].hodnoceni;
+    recipeDetailName.innerHTML = recepty[recipeIndex].nadpis;
+    recipeDetailDescription.innerHTML = recepty[recipeIndex].popis;
+};
 
+function getItemIndex(objectArray, attribute, value) {
+    for (let i = 0; i < objectArray.length; i++) {
+        if (objectArray[i][attribute] === value) {
+            return i;
+        };
+    };
+    return -1;
+};
+
+// typerror ak nekliknem na názov
+// aby keď filtrujem zmizol obrázok, ktorý už nie je v zozname
