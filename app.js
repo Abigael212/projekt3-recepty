@@ -23,7 +23,7 @@ let recipe, recipeObrazek, recipeImage, recipeInfo, recipeHeader;
 
 let searchInput = document.getElementById("hledat");
 let searchButton = document.getElementById("search");
-let inputtedSearch, filteredRecipes;
+let inputtedSearch, searchedRecipes;
 
 let categoryDropdown = document.getElementById("kategorie");
 let selectedCategory, recipesCategory;
@@ -37,9 +37,9 @@ const sortDropdownOptions = {
 };
 
 window.addEventListener("load", onPageLoad);
-searchButton.addEventListener("click", filterRecipes);
-categoryDropdown.addEventListener("change", filterCategory);
-sortDropdown.addEventListener("change", sortOrder);
+searchButton.addEventListener("click", applyFilterSort);
+categoryDropdown.addEventListener("change", applyFilterSort);
+sortDropdown.addEventListener("change", applyFilterSort);
 
 function onPageLoad() {
     createRecipeList(recepty);
@@ -74,33 +74,42 @@ function clearChildren(domElement) {
     };
 };
 
-function filterRecipes() {
+function applyFilterSort() {
     inputtedSearch = searchInput.value;
-    filteredRecipes = recepty.filter(item => {
+    selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text
+
+    searchRecipes(recepty, inputtedSearch);
+    filterCategory(searchedRecipes, selectedCategory);
+    sortRecipes(recipesCategory, selectedSorting);
+    createRecipeList(recipesSorted);
+}
+
+function searchRecipes(recipeSet, inputtedSearch) {
+    searchedRecipes = recipeSet.filter(item => {
         return item.nadpis.toLowerCase().startsWith(inputtedSearch.toLowerCase())
     });
-    createRecipeList(filteredRecipes);
+    return searchedRecipes;
 };
 
-
-function filterCategory() {
-    selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    recipesCategory = recepty.filter(item => {
+function filterCategory(recipeSet, selectedCategory) {
+    recipesCategory = recipeSet.filter(item => {
         return item.kategorie.normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(selectedCategory)
     });
-    createRecipeList(recipesCategory);
+    return recipesCategory;
 };
 
-function sortOrder() {
-    selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text
+function sortRecipes(recipeSet, selectedSorting) {
     if (selectedSorting === "") {
-        recipesSorted = recepty.sort((a, b) => (a.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "") > b.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? 1 : -1)
+        recipesSorted = recipeSet.sort((a, b) => (a.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "") > b.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? 1 : -1)
     }
     else if (selectedSorting === "Od nejlepších") {
-        recipesSorted = recepty.sort((a, b) => (a.hodnoceni < b.hodnoceni) ? 1 : -1)
+        recipesSorted = recipeSet.sort((a, b) => (a.hodnoceni < b.hodnoceni) ? 1 : -1)
     }
     else if (selectedSorting === "Od nejhorších") {
-        recipesSorted = recepty.sort((a, b) => (a.hodnoceni > b.hodnoceni) ? 1 : -1)
+        recipesSorted = recipeSet.sort((a, b) => (a.hodnoceni > b.hodnoceni) ? 1 : -1)
     }
-    createRecipeList(recipesSorted);
+    return recipesSorted;
 };
+
+
