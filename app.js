@@ -28,9 +28,18 @@ let inputtedSearch, filteredRecipes;
 let categoryDropdown = document.getElementById("kategorie");
 let selectedCategory, recipesCategory;
 
+let sortDropdown = document.getElementById("razeni");
+let selectedSorting, recipesSorted;
+const sortDropdownOptions = {
+    alphabeticalAsc: "",
+    qualityDesc: "Od nejlepších",
+    qualityAsc: "Od nejhorších"
+};
+
 window.addEventListener("load", onPageLoad);
 searchButton.addEventListener("click", filterRecipes);
-categoryDropdown.addEventListener("change", filterCategory)
+categoryDropdown.addEventListener("change", filterCategory);
+sortDropdown.addEventListener("change", sortOrder);
 
 function onPageLoad() {
     createRecipeList(recepty);
@@ -80,4 +89,18 @@ function filterCategory() {
         return item.kategorie.normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(selectedCategory)
     });
     createRecipeList(recipesCategory);
+};
+
+function sortOrder() {
+    selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text
+    if (selectedSorting === "") {
+        recipesSorted = recepty.sort((a, b) => (a.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "") > b.nadpis.normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ? 1 : -1)
+    }
+    else if (selectedSorting === "Od nejlepších") {
+        recipesSorted = recepty.sort((a, b) => (a.hodnoceni < b.hodnoceni) ? 1 : -1)
+    }
+    else if (selectedSorting === "Od nejhorších") {
+        recipesSorted = recepty.sort((a, b) => (a.hodnoceni > b.hodnoceni) ? 1 : -1)
+    }
+    createRecipeList(recipesSorted);
 };
