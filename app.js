@@ -44,6 +44,7 @@ sortDropdown.addEventListener("change", () => { filterSortRecipes(recepty) });
 
 function onPageLoad() {
     filterSortRecipes(recepty);
+    loadLastRecipe();
 };
 
 function createRecipeList(recipeArray) {
@@ -78,14 +79,14 @@ function clearChildren(domElement) {
 
 function filterSortRecipes(recipeSet) {
     inputtedSearch = searchInput.value;
-    selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text
+    selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    selectedSorting = sortDropdown.options[sortDropdown.selectedIndex].text;
 
     searchRecipes(recipeSet, inputtedSearch);
     filterCategory(searchedRecipes, selectedCategory);
     sortRecipes(recipesCategory, selectedSorting);
     createRecipeList(recipesSorted);
-}
+};
 
 function searchRecipes(recipeSet, inputtedSearch) {
     searchedRecipes = recipeSet.filter(item => {
@@ -116,13 +117,8 @@ function sortRecipes(recipeSet, selectedSorting) {
 
 function openRecipeDetail(event) {
     let chosenRecipe = event.target.innerHTML;
-    console.log(event.target)
     recipeIndex = getItemIndex(recepty, "nadpis", chosenRecipe);
-    recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
-    recipeDetailCategory.innerHTML = recepty[recipeIndex].kategorie;
-    recipeDetailRating.innerHTML = recepty[recipeIndex].hodnoceni;
-    recipeDetailName.innerHTML = recepty[recipeIndex].nadpis;
-    recipeDetailDescription.innerHTML = recepty[recipeIndex].popis;
+    applyRecipeDetail(recipeIndex)
 };
 
 function getItemIndex(objectArray, attribute, value) {
@@ -131,6 +127,23 @@ function getItemIndex(objectArray, attribute, value) {
             return i;
         };
     };
+};
+
+function loadLastRecipe() {
+    recipeIndex = localStorage.getItem("recipeIndex")
+    applyRecipeDetail(recipeIndex)
+};
+
+function applyRecipeDetail(recipeIndex) {
+    if (recipeIndex === null) {
+        return
+    };
+    recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
+    recipeDetailCategory.innerHTML = recepty[recipeIndex].kategorie;
+    recipeDetailRating.innerHTML = recepty[recipeIndex].hodnoceni;
+    recipeDetailName.innerHTML = recepty[recipeIndex].nadpis;
+    recipeDetailDescription.innerHTML = recepty[recipeIndex].popis;
+    localStorage.setItem("recipeIndex", recipeIndex);
 };
 
 // typerror ak nekliknem na názov 
