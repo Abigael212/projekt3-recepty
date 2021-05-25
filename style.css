@@ -8,22 +8,14 @@ html {
     box-sizing: inherit;
 }
 
-/* * {
-    margin: 0;
-    padding: 0;
-} */
-
-
 body {
     min-height: 100vh;
     margin: 0;
     padding: 50px 80px;
     font-family: 'Raleway', sans-serif;
     color: #555;
-    /*
     background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
     background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
-    */
     background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
 
 }
@@ -201,7 +193,6 @@ h1 {
     position: relative;
 }
 
-/*
 .recept-detail-obrazek::after {
     content: '';
     position: absolute;
@@ -212,7 +203,6 @@ h1 {
     top: 0;
     bottom: 0;
 }
-*/
 
 .recept-detail-obrazek img {
     width: 100%;

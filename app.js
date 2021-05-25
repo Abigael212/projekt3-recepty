@@ -57,7 +57,9 @@ function createRecipeList(recipeArray) {
         recipeHeader = document.createElement("h3");
 
         recipe.setAttribute("class", "recept");
-        recipe.addEventListener("click", openRecipeDetail);
+        recipe.addEventListener("click", () => {
+            applyRecipeDetail(item);
+        });
         recipeObrazek.setAttribute("class", "recept-obrazek");
         recipeImage.setAttribute("src", item.img);
         recipeInfo.setAttribute("class", "recept-info");
@@ -115,12 +117,6 @@ function sortRecipes(recipeSet, selectedSorting) {
     return recipesSorted;
 };
 
-function openRecipeDetail(event) {
-    let chosenRecipe = event.target.innerHTML;
-    recipeIndex = getItemIndex(recepty, "nadpis", chosenRecipe);
-    applyRecipeDetail(recipeIndex)
-};
-
 function getItemIndex(objectArray, attribute, value) {
     for (let i = 0; i < objectArray.length; i++) {
         if (objectArray[i][attribute] === value) {
@@ -131,20 +127,14 @@ function getItemIndex(objectArray, attribute, value) {
 
 function loadLastRecipe() {
     recipeIndex = localStorage.getItem("recipeIndex")
-    applyRecipeDetail(recipeIndex)
+    applyRecipeDetail(recepty[recipeIndex])
 };
 
-function applyRecipeDetail(recipeIndex) {
-    if (recipeIndex === null) {
-        return
-    };
-    recipeDetailPhoto.setAttribute("src", recepty[recipeIndex].img);
-    recipeDetailCategory.innerHTML = recepty[recipeIndex].kategorie;
-    recipeDetailRating.innerHTML = recepty[recipeIndex].hodnoceni;
-    recipeDetailName.innerHTML = recepty[recipeIndex].nadpis;
-    recipeDetailDescription.innerHTML = recepty[recipeIndex].popis;
-    localStorage.setItem("recipeIndex", recipeIndex);
+function applyRecipeDetail(item) {
+    recipeDetailPhoto.setAttribute("src", item.img);
+    recipeDetailCategory.innerHTML = item.kategorie;
+    recipeDetailRating.innerHTML = item.hodnoceni;
+    recipeDetailName.innerHTML = item.nadpis;
+    recipeDetailDescription.innerHTML = item.popis;
+    localStorage.setItem("recipeIndex", recepty.indexOf(item));
 };
-
-// typerror ak nekliknem na názov 
-// aby keď filtrujem zmizol obrázok, ktorý už nie je v zozname
